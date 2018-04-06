@@ -4,7 +4,7 @@ import FluentProvider
 public extension Collection {
     /// Convert self to JSON String.
     /// - Returns: Returns the JSON as String or empty string if error while parsing.
-    func json() -> String {
+    public func json() -> String {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: self, options: [.prettyPrinted])
             guard let jsonString = String(data: jsonData, encoding: String.Encoding.utf8) else {
@@ -19,8 +19,8 @@ public extension Collection {
     }
 }
 
-extension String {
-    func split(len: Int) -> [String] {
+public extension String {
+    public func split(len: Int) -> [String] {
         return stride(from: 0, to: self.count, by: len).map {
             let start = self.index(self.startIndex, offsetBy: $0)
             let end = self.index(start, offsetBy: len, limitedBy: self.endIndex) ?? self.endIndex
@@ -28,7 +28,7 @@ extension String {
         }
     }
     
-    func componentsAppendingSeparators(separatedBy separators: Set<String>) -> [String] {
+    public func componentsAppendingSeparators(separatedBy separators: Set<String>) -> [String] {
         let separatorString = "SomeStringThatYouDoNotExpectToOccurInSelf"
         var preparedString: String = self
         
@@ -43,7 +43,7 @@ extension String {
 }
 
 
-extension Formatter {
+public extension Formatter {
     static let iso8601: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
@@ -53,21 +53,21 @@ extension Formatter {
         return formatter
     }()
 }
-extension Date {
+public extension Date {
     var iso8601: String {
         return Formatter.iso8601.string(from: self)
     }
 }
 
-extension String {
+public extension String {
     var dateFromISO8601: Date? {
         return Formatter.iso8601.date(from: self)   // "Mar 22, 2017, 10:22 AM"
     }
 }
 
-extension Timestampable {
+public extension Timestampable {
     
-    func formattedCreatedAt(dateFormat: String) -> String? {
+    public func formattedCreatedAt(dateFormat: String) -> String? {
         
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
@@ -75,7 +75,7 @@ extension Timestampable {
         return createdAt.map { formatter.string(from: $0) }
     }
     
-    func formattedUpdatedAt(dateFormat: String) -> String? {
+    public func formattedUpdatedAt(dateFormat: String) -> String? {
         
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
@@ -84,8 +84,8 @@ extension Timestampable {
     }
 }
 
-extension Dictionary where Key == String {
-    func toJSON() -> Vapor.JSON? {
+public extension Dictionary where Key == String {
+    public func toJSON() -> Vapor.JSON? {
         guard let node = try? self.makeNode(in: jsonContext) else {
             return nil
         }
@@ -93,12 +93,12 @@ extension Dictionary where Key == String {
     }
 }
 
-extension Vapor.JSON {
-    func toString() -> String? {
+public extension Vapor.JSON {
+    public func toString() -> String? {
         return try? self.makeBytes().makeString()
     }
     
-    func toStringDictionary() throws -> [String: String]? {
+    public func toStringDictionary() throws -> [String: String]? {
         do {
             return try self.object?.mapValues({ (oldValue) -> String in
                 guard let newValue = oldValue.string else {
@@ -112,12 +112,12 @@ extension Vapor.JSON {
     }
 }
 
-enum Exception: Error {
+public enum Exception: Error {
     case IllegalArgumentException
 }
 
-extension String {
-    func toJSON() -> Vapor.JSON? {
+public extension String {
+    public func toJSON() -> Vapor.JSON? {
         return try? Vapor.JSON(bytes: self.bytes)
     }
 }
