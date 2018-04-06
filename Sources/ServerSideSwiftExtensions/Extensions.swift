@@ -42,29 +42,6 @@ public extension String {
     }
 }
 
-
-public extension Formatter {
-    static let iso8601: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        return formatter
-    }()
-}
-public extension Date {
-    var iso8601: String {
-        return Formatter.iso8601.string(from: self)
-    }
-}
-
-public extension String {
-    var dateFromISO8601: Date? {
-        return Formatter.iso8601.date(from: self)   // "Mar 22, 2017, 10:22 AM"
-    }
-}
-
 public extension Timestampable {
     
     public func formattedCreatedAt(dateFormat: String) -> String? {
@@ -72,7 +49,7 @@ public extension Timestampable {
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
         
-        return createdAt.map { formatter.string(from: $0) }
+        return formattedCreatedAt(formatter: formatter)
     }
     
     public func formattedUpdatedAt(dateFormat: String) -> String? {
@@ -80,6 +57,14 @@ public extension Timestampable {
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
         
+        return formattedUpdatedAt(formatter: formatter)
+    }
+    
+    public func formattedCreatedAt(formatter: DateFormatter) -> String? {
+        return createdAt.map { formatter.string(from: $0) }
+    }
+    
+    public func formattedUpdatedAt(formatter: DateFormatter) -> String? {
         return updatedAt.map { formatter.string(from: $0) }
     }
 }
