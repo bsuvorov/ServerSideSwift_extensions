@@ -106,3 +106,9 @@ public extension String {
         return try? Vapor.JSON(bytes: self.bytes)
     }
 }
+
+public extension Int {
+    public var string: String {
+        return String(self)
+    }
+}
