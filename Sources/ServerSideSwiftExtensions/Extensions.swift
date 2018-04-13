@@ -1,4 +1,5 @@
 import Foundation
+import HTTP
 import FluentProvider
 
 public extension Collection {
@@ -110,5 +111,23 @@ public extension String {
 public extension Int {
     public var string: String {
         return String(self)
+    }
+}
+
+public extension HTTP.Body {
+    public var json: Vapor.JSON? {
+        guard let bytes = self.bytes else {
+            return nil
+        }
+        return try? Vapor.JSON(bytes: bytes)
+    }
+}
+
+public extension HTTP.Response {
+    public var bodyIfStatusOk: HTTP.Body? {
+        guard status == .ok else {
+            return nil
+        }
+        return body
     }
 }
