@@ -74,7 +74,7 @@ public final class SafeMemoryCache {
     }
 }
 
-public extension SafeMemoryCache {
+extension SafeMemoryCache {
     public func set(_ key: String, _ value: Any) {
         return set(key, value, expiration: nil)
     }
