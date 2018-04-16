@@ -21,6 +21,15 @@ public extension Formatter {
         formatter.dateFormat = "MM/dd/yyyy"
         return formatter
     }()
+    
+    public static let BackendDateTimeFormat: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
+        return formatter
+    }()
 }
 
 public extension Date {
