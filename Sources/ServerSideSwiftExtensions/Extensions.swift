@@ -141,3 +141,12 @@ public extension Int {
         #endif
     }
 }
+
+public extension Array {
+    public var notEmptyOrNil: Array? {
+        guard self.count > 0 else {
+            return nil
+        }
+        return self
+    }
+}
