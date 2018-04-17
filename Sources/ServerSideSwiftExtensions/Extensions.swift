@@ -133,7 +133,7 @@ public extension HTTP.Response {
 }
 
 public extension Int {
-    public func random(min: Int = 0, max: Int) -> Int {
+    public static func random(min: Int = 0, max: Int) -> Int {
         #if os(Linux)
             return Int(random() % max) + min
         #else
