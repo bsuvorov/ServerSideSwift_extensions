@@ -131,3 +131,13 @@ public extension HTTP.Response {
         return body
     }
 }
+
+public extension Int {
+    public func random(min: Int = 0, max: Int) -> Int {
+        #if os(Linux)
+            return Int(random() % max) + min
+        #else
+            return Int(arc4random_uniform(UInt32(max)) + UInt32(min))
+        #endif
+    }
+}
