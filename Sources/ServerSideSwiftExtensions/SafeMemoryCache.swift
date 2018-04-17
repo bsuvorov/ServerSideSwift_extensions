@@ -3,11 +3,17 @@ import Dispatch
 
 public final class SafeMemoryCache {
     private static let CACHE_CLEAN_DELAY: Double = 60 * 60
-    
+
+    private var dispatchQueueLabel: String;
+
     private var storage: [String: (Date?, Any)] = [:]
     private let lock = NSLock()
     private var lastClean = Date()
     
+    public init(dispatchQueueLabel: String) {
+        self.dispatchQueueLabel = dispatchQueueLabel
+    }
+
     public func get(_ key: String) -> Any? {
         lock.lock()
         defer { lock.unlock() }
@@ -40,7 +46,7 @@ public final class SafeMemoryCache {
     }
     
     public func cleanExpiredDataAsync() {
-        DispatchQueue(label: "MessengerBot.MemoryCache.Queue").async { [weak self] in
+        DispatchQueue(label: self.dispatchQueueLabel).async { [weak self] in
             guard let welf = self else {
                 return
             }
@@ -68,7 +74,7 @@ public final class SafeMemoryCache {
     }
 }
 
-extension SafeMemoryCache {
+public extension SafeMemoryCache {
     public func set(_ key: String, _ value: Any) {
         return set(key, value, expiration: nil)
     }
