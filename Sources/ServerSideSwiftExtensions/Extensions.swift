@@ -20,6 +20,12 @@ public extension Collection {
     }
 }
 
+public extension Date {
+    public func durationFrom(date: Date) -> Int {
+        return Int(1000*(self.timeIntervalSince1970 - date.timeIntervalSince1970))
+    }
+}
+
 public extension String {
     public func split(len: Int) -> [String] {
         return stride(from: 0, to: self.count, by: len).map {
